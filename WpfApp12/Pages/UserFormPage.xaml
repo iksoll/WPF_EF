@@ -1,0 +1,124 @@
+﻿<Page x:Class="WpfApp12.Pages.UserFormPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:validators="clr-namespace:WpfApp12.ValidationRules"
+      mc:Ignorable="d"
+      d:DesignHeight="500" d:DesignWidth="600"
+      Title="Форма пользователя"
+      Background="{DynamicResource MaterialDesignPaper}">
+
+    <Page.Resources>
+        <Style TargetType="ItemsControl">
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="16,-4,0,8"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="ErrorText">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Форма пользователя" Grid.ColumnSpan="2" FontSize="24" Margin="0,0,0,24"/>
+
+        <TextBlock Text="Логин:" Grid.Row="1" VerticalAlignment="Center"/>
+        <TextBox x:Name="LoginBox" Grid.Row="1" Grid.Column="1" Margin="16,0,0,0">
+            <TextBox.Text>
+                <Binding Path="Login" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validators:RequiredRule FieldName="Логин"/>
+                        <validators:LoginValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <ItemsControl Grid.Row="2" Grid.Column="1"
+                      ItemsSource="{Binding ElementName=LoginBox, Path=(Validation.Errors)}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Style="{StaticResource ErrorText}" Text="{Binding ErrorContent}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Text="Имя:" Grid.Row="3" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="16,0,0,0"
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="Email:" Grid.Row="4" VerticalAlignment="Center"/>
+        <TextBox x:Name="EmailBox" Grid.Row="4" Grid.Column="1" Margin="16,0,0,0">
+            <TextBox.Text>
+                <Binding Path="Email" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validators:RequiredRule FieldName="Email"/>
+                        <validators:EmailValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <ItemsControl Grid.Row="5" Grid.Column="1"
+                      ItemsSource="{Binding ElementName=EmailBox, Path=(Validation.Errors)}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Style="{StaticResource ErrorText}" Text="{Binding ErrorContent}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Text="Пароль:" Grid.Row="6" VerticalAlignment="Center"/>
+        <PasswordBox x:Name="PasswordBox" Grid.Row="6" Grid.Column="1" Margin="16,0,0,0"
+                     material:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <ItemsControl Grid.Row="7" Grid.Column="1"
+                      ItemsSource="{Binding ElementName=PasswordBox, Path=(Validation.Errors)}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Style="{StaticResource ErrorText}" Text="{Binding ErrorContent}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Text="Дата создания:" Grid.Row="7" VerticalAlignment="Center"/>
+        <DatePicker x:Name="CreatedAtPicker" Grid.Row="7" Grid.Column="1" Margin="16,0,0,0">
+            <DatePicker.SelectedDate>
+                <Binding Path="CreatedAt" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validators:CreatedAtValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </DatePicker.SelectedDate>
+        </DatePicker>
+        <ItemsControl Grid.Row="8" Grid.Column="1"
+                      ItemsSource="{Binding ElementName=CreatedAtPicker, Path=(Validation.Errors)}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Style="{StaticResource ErrorText}" Text="{Binding ErrorContent}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Сохранить" Click="SaveButton_Click" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0,0,8,0"/>
+            <Button Content="Назад" Click="BackButton_Click" Style="{StaticResource MaterialDesignFlatButton}"/>
+        </StackPanel>
+    </Grid>
+</Page>
