@@ -11,6 +11,8 @@ namespace WpfApp12.Data
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,18 +23,32 @@ namespace WpfApp12.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(u => u.Id);
-                entity.Property(u => u.Login).IsRequired().HasMaxLength(100);
-                entity.Property(u => u.Email).IsRequired().HasMaxLength(100);
-                entity.Property(u => u.Password).IsRequired();
-                entity.Property(u => u.Name).HasMaxLength(100);
-                entity.Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.UserProfile)
+                .WithOne(up => up.User)
+                .HasForeignKey<UserProfile>(up => up.UserId)
+                .IsRequired(false);
 
-                entity.HasIndex(u => u.Login).IsUnique();
-                entity.HasIndex(u => u.Email).IsUnique();
-            });
+            modelBuilder.Entity<Role>()
+                .HasMany(r => r.Users)
+                .WithOne(u => u.Role)
+                .HasForeignKey(u => u.RoleId);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Login).IsUnique();
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email).IsUnique();
+
+            modelBuilder.Entity<Role>().HasData(
+                new Role { Id = 1, Title = "Пользователь" },
+                new Role { Id = 2, Title = "Менеджер" },
+                new Role { Id = 3, Title = "Администратор" }
+            );
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.RoleId)
+                .HasDefaultValue(1);
         }
     }
 }
+

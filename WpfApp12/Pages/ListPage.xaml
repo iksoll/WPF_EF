@@ -36,8 +36,18 @@
                         <StackPanel>
                             <TextBlock Text="{Binding Login}" FontWeight="Bold" FontSize="16"/>
                             <TextBlock Text="{Binding Name}" Foreground="{DynamicResource MaterialDesignBody}"/>
-                            <TextBlock Text="{Binding Email}"/>
-                            <TextBlock Text="{Binding CreatedAt, StringFormat=dd.MM.yyyy HH:mm:ss}"/>
+                            <TextBlock>
+                                <Run Text="Email:" FontWeight="Bold"/>
+                                <Run Text="{Binding Email}"/>
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="Роль:" FontWeight="Bold"/>
+                                <Run Text="{Binding Role.Title, FallbackValue='—'}"/>
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="Телефон:" FontWeight="Bold"/>
+                                <Run Text="{Binding UserProfile.Phone, FallbackValue='—'}"/>
+                            </TextBlock>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

@@ -1,15 +1,10 @@
 ﻿<Page x:Class="WpfApp12.Pages.UserFormPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:validators="clr-namespace:WpfApp12.ValidationRules"
-      mc:Ignorable="d"
-      d:DesignHeight="500" d:DesignWidth="600"
       Title="Форма пользователя"
       Background="{DynamicResource MaterialDesignPaper}">
-
     <Page.Resources>
         <Style TargetType="ItemsControl">
             <Setter Property="Foreground" Value="Red"/>
@@ -23,6 +18,11 @@
 
     <Grid Margin="24">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -86,8 +86,22 @@
         </ItemsControl>
 
         <TextBlock Text="Пароль:" Grid.Row="6" VerticalAlignment="Center"/>
-        <PasswordBox x:Name="PasswordBox" Grid.Row="6" Grid.Column="1" Margin="16,0,0,0"
-                     material:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <PasswordBox x:Name="PasswordBox" Grid.Row="6" Grid.Column="1" Margin="16,0,0,0">
+            <PasswordBox.Style>
+                <Style TargetType="PasswordBox" BasedOn="{StaticResource MaterialDesignPasswordBox}">
+                    <Setter Property="material:PasswordBoxAssist.Password">
+                        <Setter.Value>
+                            <Binding Path="Password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validators:RequiredRule FieldName="Пароль"/>
+                                    <validators:PasswordValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </PasswordBox.Style>
+        </PasswordBox>
         <ItemsControl Grid.Row="7" Grid.Column="1"
                       ItemsSource="{Binding ElementName=PasswordBox, Path=(Validation.Errors)}">
             <ItemsControl.ItemTemplate>
@@ -97,8 +111,8 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <TextBlock Text="Дата создания:" Grid.Row="7" VerticalAlignment="Center"/>
-        <DatePicker x:Name="CreatedAtPicker" Grid.Row="7" Grid.Column="1" Margin="16,0,0,0">
+        <TextBlock Text="Дата создания:" Grid.Row="8" VerticalAlignment="Center"/>
+        <DatePicker x:Name="CreatedAtPicker" Grid.Row="8" Grid.Column="1" Margin="16,0,0,0">
             <DatePicker.SelectedDate>
                 <Binding Path="CreatedAt" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -107,7 +121,7 @@
                 </Binding>
             </DatePicker.SelectedDate>
         </DatePicker>
-        <ItemsControl Grid.Row="8" Grid.Column="1"
+        <ItemsControl Grid.Row="9" Grid.Column="1"
                       ItemsSource="{Binding ElementName=CreatedAtPicker, Path=(Validation.Errors)}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -116,7 +130,27 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,16,0,0">
+        <TextBlock Text="Телефон:" Grid.Row="10" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="10" Grid.Column="1" Margin="16,0,0,0"
+                 Text="{Binding UserProfile.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Text="Дата рождения:" Grid.Row="11" VerticalAlignment="Center"/>
+        <DatePicker Grid.Row="11" Grid.Column="1" Margin="16,0,0,0"
+                    SelectedDate="{Binding UserProfile.Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Text="Био:" Grid.Row="12" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="12" Grid.Column="1" Margin="16,0,0,0"
+                 Text="{Binding UserProfile.Bio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True" Height="60" TextWrapping="Wrap" />
+
+        <TextBlock Text="Роль:" Grid.Row="13" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="13" Grid.Column="1" Margin="16,0,0,0"
+                  ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=Service.Roles}"
+                  DisplayMemberPath="Title"
+                  SelectedValuePath="Id"
+                  SelectedValue="{Binding RoleId}" />
+
+        <StackPanel Orientation="Horizontal" Grid.Row="14" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,16,0,0">
             <Button Content="Сохранить" Click="SaveButton_Click" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0,0,8,0"/>
             <Button Content="Назад" Click="BackButton_Click" Style="{StaticResource MaterialDesignFlatButton}"/>
         </StackPanel>

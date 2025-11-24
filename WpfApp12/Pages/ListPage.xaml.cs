@@ -1,11 +1,13 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using WpfApp12.Services;
 
 namespace WpfApp12.Pages
 {
     public partial class ListPage : Page
     {
-        public UserService Service { get; } = new();
+        public UserService Service => UserService.Instance;
+        public ObservableCollection<User> Users => Service.Users;
         public User? SelectedUser { get; set; }
 
         public ListPage()
@@ -15,9 +17,7 @@ namespace WpfApp12.Pages
         }
 
         private void AddButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            NavigationService?.Navigate(new UserFormPage());
-        }
+            => NavigationService?.Navigate(new UserFormPage());
 
         private void EditItem_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
