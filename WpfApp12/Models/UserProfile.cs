@@ -22,5 +22,6 @@ namespace WpfApp12
         public int? UserId { get => _userId; set => SetProperty(ref _userId, value); }
 
         public User? User { get => _user; set => SetProperty(ref _user, value); }
+
     }
 }

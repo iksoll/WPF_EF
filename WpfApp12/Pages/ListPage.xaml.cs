@@ -30,5 +30,10 @@ namespace WpfApp12.Pages
             if (SelectedUser != null)
                 Service.Remove(SelectedUser);
         }
+
+        private void RolesButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+             NavigationService?.Navigate(new RolePage());
+        }
     }
 }

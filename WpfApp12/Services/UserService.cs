@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using WpfApp12.Data;
 
 namespace WpfApp12.Services
@@ -36,6 +38,23 @@ namespace WpfApp12.Services
 
             Users.Clear();
             foreach (var u in users) Users.Add(u);
+        }
+
+        public void LoadUsersForRole(Role role)
+        {
+            var entry = _db.Entry(role);
+            var nav = entry.Metadata.FindNavigation(nameof(Role.Users));
+            if (nav != null && nav.IsCollection)
+            {
+                entry.Collection(r => r.Users)
+                .Load();
+
+                _db.Entry(role)
+                   .Collection(r => r.Users)
+                   .Query()
+                   .Include(u => u.UserProfile)
+                   .Load();
+            }
         }
 
         public bool Add(User user)
@@ -80,5 +99,6 @@ namespace WpfApp12.Services
             }
             catch { }
         }
+
     }
 }

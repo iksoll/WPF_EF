@@ -17,7 +17,7 @@ namespace WpfApp12.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Server=localhost\\SQLEXPRESS;Database=UserDb;Trusted_Connection=True;TrustServerCertificate=True;"
+                "Server=(localdb)\\MSSQLLocalDB;Database=WPF_EF;Trusted_Connection=True;TrustServerCertificate=True;"
             );
         }
 
