@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
-      mc:Ignorable="d"
       Title="Пользователи роли"
       Background="{DynamicResource MaterialDesignPaper}">
 
@@ -34,6 +33,7 @@
                                 <TextBlock Text="{Binding Login}" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding Name}" Foreground="{DynamicResource MaterialDesignBody}"/>
                                 <TextBlock Text="{Binding Email}"/>
+                                <TextBlock Text="{Binding UserProfile.Phone, FallbackValue='—'}"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>

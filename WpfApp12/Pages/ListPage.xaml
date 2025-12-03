@@ -4,21 +4,19 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
-      mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="Список пользователей"
       Background="{DynamicResource MaterialDesignPaper}">
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
             <Button Content="Добавить" Click="AddButton_Click" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0,0,8,0"/>
             <Button Content="Удалить" Click="DeleteItem_Click" Style="{StaticResource MaterialDesignRaisedLightButton}"/>
             <Button Content="Роли" Click="RolesButton_Click" Style="{StaticResource MaterialDesignRaisedLightButton}" Margin="5"/>
+            <Button Content="Группы" Click="GroupsButton_Click" Style="{StaticResource MaterialDesignRaisedLightButton}"/>
         </StackPanel>
 
         <ListView Grid.Row="1"
@@ -49,6 +47,10 @@
                                 <Run Text="Телефон:" FontWeight="Bold"/>
                                 <Run Text="{Binding UserProfile.Phone, FallbackValue='—'}"/>
                             </TextBlock>
+                            <TextBlock>
+                                <Run Text="Групп:"/>
+                                <Run Text="{Binding InterestGroups.Count}"/>
+                            </TextBlock>
                             <Image Grid.Row="14" Grid.Column="1" Margin="16,0,0,0" Height="80" Width="80"
                                 Source="{Binding UserProfile.AvatarUrl, TargetNullValue={x:Null}, FallbackValue={x:Null}}"
                                 Stretch="UniformToFill" HorizontalAlignment="Left">
@@ -71,9 +73,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
-        <TextBlock Grid.Row="2" Margin="0,8,0,0"
-                   Text="{Binding Users.Count, StringFormat=Всего: {0}}"
-                   FontSize="14" Foreground="{DynamicResource MaterialDesignBody}"/>
     </Grid>
 </Page>

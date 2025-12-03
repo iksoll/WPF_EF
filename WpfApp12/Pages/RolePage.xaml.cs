@@ -8,7 +8,6 @@ namespace WpfApp12.Pages
     public partial class RolePage : Page
     {
         public UserService Service => UserService.Instance;
-        public ObservableCollection<Role> Roles => Service.Roles;
         public Role? SelectedRole { get; set; }
 
         public RolePage()
@@ -18,7 +17,10 @@ namespace WpfApp12.Pages
         }
 
         private void BackButton_Click(object sender, System.Windows.RoutedEventArgs e)
-            => NavigationService?.GoBack();
+        {
+            NavigationService.GoBack();
+        }
+            
 
         private void RoleDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

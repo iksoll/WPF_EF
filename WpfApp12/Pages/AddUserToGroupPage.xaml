@@ -1,0 +1,34 @@
+﻿<Page x:Class="WpfApp12.Pages.AddUserToGroupPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Title="Добавить в группу"
+      Background="{DynamicResource MaterialDesignPaper}">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Группа:" FontWeight="Bold"/>
+        <TextBlock Text="{Binding Group.Title}" Grid.Row="1" Margin="0,0,0,16"/>
+
+        <TextBlock Text="Пользователь:" Grid.Row="1"/>
+        <ComboBox Grid.Row="2" ItemsSource="{Binding Users}"
+                  SelectedItem="{Binding SelectedUser}"
+                  DisplayMemberPath="Login" Margin="0,0,0,8"/>
+
+        <CheckBox Grid.Row="3" Content="Сделать модератором" IsChecked="{Binding IsModerator}" Margin="0,0,0,8"/>
+
+        <DatePicker Grid.Row="4" SelectedDate="{Binding JoinedAt}" Margin="0,0,0,16"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Right">
+            <Button Content="Добавить" Click="Add_Click" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0,0,8,0"/>
+            <Button Content="Отмена" Click="Cancel_Click" Style="{StaticResource MaterialDesignFlatButton}"/>
+        </StackPanel>
+    </Grid>
+</Page>

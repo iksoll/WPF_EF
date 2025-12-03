@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace WpfApp12
+namespace WpfApp12.Models
 {
     public class ObservableObject : INotifyPropertyChanged
     {

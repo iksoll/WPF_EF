@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WpfApp12.Data;
+using WpfApp12.Models;
 
 namespace WpfApp12.Services
 {
@@ -12,65 +13,28 @@ namespace WpfApp12.Services
         public static UserService Instance => _instance ??= new();
 
         private readonly AppDbContext _db = BaseDbService.Instance.Context;
-
         public ObservableCollection<User> Users { get; } = new();
-        public ObservableCollection<Role> Roles { get; } = new();
 
-        private UserService()
-        {
-            LoadAllRoles();
-            LoadAll();
-        }
-
-        private void LoadAllRoles()
-        {
-            var roles = _db.Roles.ToList();
-            Roles.Clear();
-            foreach (var r in roles) Roles.Add(r);
-        }
+        private UserService() => LoadAll();
 
         public void LoadAll()
         {
             var users = _db.Users
                 .Include(u => u.UserProfile)
                 .Include(u => u.Role)
+                .Include(u => u.InterestGroups)
+                    .ThenInclude(ug => ug.InterestGroup)
                 .ToList();
 
             Users.Clear();
             foreach (var u in users) Users.Add(u);
         }
 
-        public void LoadUsersForRole(Role role)
-        {
-            var entry = _db.Entry(role);
-            var nav = entry.Metadata.FindNavigation(nameof(Role.Users));
-            if (nav != null && nav.IsCollection)
-            {
-                entry.Collection(r => r.Users)
-                .Load();
-
-                _db.Entry(role)
-                   .Collection(r => r.Users)
-                   .Query()
-                   .Include(u => u.UserProfile)
-                   .Load();
-            }
-        }
-
         public bool Add(User user)
         {
-            if (Users.Any(u => u.Id != user.Id && string.Equals(u.Login, user.Login, StringComparison.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-            if (Users.Any(u => u.Id != user.Id && string.Equals(u.Email, user.Email, StringComparison.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-
-            _db.Users.Add(user);
             try
             {
+                _db.Users.Add(user);
                 _db.SaveChanges();
                 Users.Add(user);
                 return true;
@@ -78,27 +42,13 @@ namespace WpfApp12.Services
             catch { return false; }
         }
 
-        public bool Update(User user)
-        {
-            try
-            {
-                _db.Update(user);
-                _db.SaveChanges();
-                return true;
-            }
-            catch { return false; }
-        }
+        public bool Update(User user) => _db.SaveChanges() > 0;
 
         public void Remove(User user)
         {
-            try
-            {
-                _db.Users.Remove(user);
-                _db.SaveChanges();
+            _db.Users.Remove(user);
+            if (_db.SaveChanges() > 0)
                 Users.Remove(user);
-            }
-            catch { }
         }
-
     }
 }

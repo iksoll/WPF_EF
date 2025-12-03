@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MaterialDesignThemes.Wpf;
-using WpfApp12;
+using WpfApp12.Models;
 using WpfApp12.Services;
 
 namespace WpfApp12.Pages

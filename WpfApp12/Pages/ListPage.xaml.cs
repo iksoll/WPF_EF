@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
+using WpfApp12.Models;
 using WpfApp12.Services;
 
 namespace WpfApp12.Pages
@@ -17,7 +19,9 @@ namespace WpfApp12.Pages
         }
 
         private void AddButton_Click(object sender, System.Windows.RoutedEventArgs e)
-            => NavigationService?.Navigate(new UserFormPage());
+        {
+            NavigationService.Navigate(new UserFormPage());
+        }
 
         private void EditItem_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -33,7 +37,12 @@ namespace WpfApp12.Pages
 
         private void RolesButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-             NavigationService?.Navigate(new RolePage());
+             NavigationService.Navigate(new RolePage());
+        }
+
+        private void GroupsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new InterestGroupListPage());
         }
     }
 }

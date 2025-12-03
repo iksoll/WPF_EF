@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace WpfApp12
+namespace WpfApp12.Models
 {
     public class User : ObservableObject
     {
@@ -15,6 +15,7 @@ namespace WpfApp12
         private UserProfile? _userProfile;
         private int _roleId = 1;
         private Role? _role;
+        private ObservableCollection<UserInterestGroup> _interestGroups = new();
 
         public int Id { get => _id; set => SetProperty(ref _id, value); }
         public string Login { get => _login; set => SetProperty(ref _login, value); }
@@ -39,6 +40,12 @@ namespace WpfApp12
         {
             get => _role;
             set => SetProperty(ref _role, value);
+        }
+
+        public ObservableCollection<UserInterestGroup> InterestGroups
+        {
+            get => _interestGroups;
+            set => SetProperty(ref _interestGroups, value);
         }
     }
 }

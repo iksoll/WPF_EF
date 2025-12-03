@@ -167,6 +167,31 @@
             </Image.Style>
         </Image>
 
+        <TextBlock Text="Группы:" Grid.Row="16" FontWeight="Bold" Margin="0,16,0,4"/>
+        <ListView Grid.Row="16" Grid.Column="1" ItemsSource="{Binding InterestGroups}" Margin="16,0,0,0" Height="100">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding InterestGroup.Title}"/>
+                        <TextBlock Text="(модератор)" Foreground="Green" FontWeight="Bold" Margin="4,0,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsModerator}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text=", " Margin="2,0,2,0"/>
+                        <TextBlock Text="{Binding JoinedAt, StringFormat=dd.MM.yyyy}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
         <TextBlock Text="Роль:" Grid.Row="15" VerticalAlignment="Center"/>
         <ComboBox Grid.Row="15" Grid.Column="1" Margin="16,0,0,0"
                   ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=Service.Roles}"

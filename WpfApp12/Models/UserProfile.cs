@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using WpfApp12.Models;
 
 namespace WpfApp12
 {
